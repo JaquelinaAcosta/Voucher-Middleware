@@ -1,0 +1,18 @@
+serviciosexternos:
+  url:
+    voucherservices:
+      enviarvoucher: "http://localhost:8012/api/voucher/procesarVoucher"
+      auth: "http://localhost:8012/oauth/token"
+      
+spring: 
+  profiles: 
+    active: dev
+  
+ 
+#endpoint:
+#  comprobante:
+#        factura:
+#            isnropedido: "http://10.4.100.101:8150/publicRumboService/comprobante/factura/{pto}/{nro}/1/{cdg}/0"
+#            rumbo: "http://10.4.100.134:8081/redmegatone/integration/ComprobantePublicService"   
+#            
+#logging:#  level:#    root: debug
