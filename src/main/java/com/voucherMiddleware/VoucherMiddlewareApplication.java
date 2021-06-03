@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @ComponentScan({"com.voucherMiddleware","com.voucherExcel"} )
-@EnableTransactionManagement
+//@EnableTransactionManagement
 public class VoucherMiddlewareApplication {
 
 	public static void main(String[] args) {

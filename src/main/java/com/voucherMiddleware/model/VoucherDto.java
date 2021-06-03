@@ -8,6 +8,15 @@ public class VoucherDto {
 	private String dniCliente;
 	private String facturaAsociada;
 	
+	public VoucherDto() {
+		
+	}
+	public VoucherDto(List<String> codigoVoucher, String dniCliente, String facturaAsociada) {
+		super();
+		this.codigoVoucher = codigoVoucher;
+		this.dniCliente = dniCliente;
+		this.facturaAsociada = facturaAsociada;
+	}
 	public List<String> getCodigoVoucher() {
 		return codigoVoucher;
 	}
@@ -27,4 +36,8 @@ public class VoucherDto {
 		this.facturaAsociada = facturaAsociada;
 	}
 
+	@Override
+	  public String toString() {
+	    return "{ codigoVouche: " + codigoVoucher + ", dniCliente: " + dniCliente + ", facturaAsociada: " + facturaAsociada  + "}";
+	  }
 }

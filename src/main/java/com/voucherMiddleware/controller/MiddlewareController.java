@@ -13,6 +13,12 @@ import com.voucherMiddleware.model.VoucherDto;
 import com.voucherMiddleware.services.VoucherMidService;
 import com.voucherMiddleware.services.impl.VoucherMidServiceImpl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +43,9 @@ public class MiddlewareController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	//Controla que los vouchers esten disponibles para ser utilizados (que los estados no sean Vencidos y Utilizados, y el dni corresponda con el codigo de voucher))
-//	@PostMapping(path = "/enviar/consulta", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/enviar/consulta", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
-	consumes=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/enviar/consulta", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<String> consultarVoucher(@RequestBody String voucherJson) throws Exception {
 		
-		logger.info("contoller middlew");
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode objJson = mapper.readTree(voucherJson);
 		JsonNode requestvoucherDtoNodo = mapper.readTree(objJson.get("string").asText());
@@ -59,7 +62,11 @@ public class MiddlewareController {
 		} catch (Throwable e) {
 			e.printStackTrace();
 			response.setStatus("ERROR");
-			response.setMsgError("Error al procesar voucher:" + e.getMessage());
+			if(e.getMessage() == null) {
+			response.setMsgError("Error al procesar voucher. Verificar DNI y/o código/s de voucher ingresados.");
+			}else {
+				response.setMsgError(e.getMessage());
+			}
 			newNode.putPOJO("ResponseMiddlewere", response);
 			return new ResponseEntity<String>(newNode.toString(),HttpStatus.OK);
 		}
@@ -92,7 +99,7 @@ public class MiddlewareController {
 		} catch (Throwable e) {
 			e.printStackTrace();
 			response.setStatus("ERROR");
-			response.setMsgError("Error al procesar voucher:" + e.getMessage());
+			response.setMsgError("Error al procesar voucher: " + e.getMessage());
 			newNode.putPOJO("ResponseMiddlewere", response);
 			return new ResponseEntity<String>(newNode.toString(),HttpStatus.OK);
 		}
@@ -110,7 +117,7 @@ public class MiddlewareController {
 	
 	
 	//Usar voucher completamente, guardar codigo de factura y cambiar estado "UTILIZADO"
-	@PostMapping(path = "/enviar/utilizar", consumes = "application/json", produces = "application/json")
+	@PostMapping(path = "/enviar/utilizado", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<String> utilizarVoucher(@RequestBody String voucherDtoJson) throws Exception {
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -140,6 +147,36 @@ public class MiddlewareController {
 		}
 		newNode.putPOJO("ResponseMiddlewere", response);
 		return new ResponseEntity<String>(newNode.toString(),HttpStatus.OK);
+	}
+	
+	
+	
+	
+	//TODO: SACAR ESTO! es solo para simular un string desde rumbo
+	@RequestMapping(value = "/string", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes=MediaType.APPLICATION_JSON_VALUE)	
+public String stringVoucher(@RequestBody @Valid VoucherDto voucherJson) throws Exception {
+		
+		List<String> codigo = new ArrayList<String>();
+		codigo.add("138569");
+		codigo.add("138111");
+		
+		VoucherDto voucherDto = new VoucherDto();
+		
+		logger.info("voucher json y dto null");
+		System.out.println(voucherJson.getDniCliente());
+		System.out.println(voucherDto);
+		voucherDto = voucherJson;
+		voucherDto.setCodigoVoucher(codigo);
+		
+		logger.info("asignacion a dto null");
+		System.out.println(voucherDto);
+
+		String dos = String.valueOf(voucherDto);
+
+		String vouch;
+		vouch = voucherDto.toString();
+		return vouch;
 	}
 	
 }

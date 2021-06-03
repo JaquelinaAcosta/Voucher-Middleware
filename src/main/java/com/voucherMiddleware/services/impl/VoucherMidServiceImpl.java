@@ -60,23 +60,32 @@ public class VoucherMidServiceImpl{
 			
 			Voucher voucher = new Voucher();
 			voucher = voucherRepository.findByCodigoVoucherAndDni(cv, voucherDto.getDniCliente());
+			System.out.println(voucher);
+			System.out.println(voucher.getEstado());
+			System.out.println("valor de la habilitacuin del voucher");
+			System.out.println(voucher.getHabilitado().booleanValue());
+			System.out.println(voucher.getHabilitado());
+					
 			try {
-				if ((voucher.getEstado() == "E" || voucher.getEstado() == "AF") && voucher.getHabilitado() == true) {
+				if ((voucher.getEstado().equals("E") || voucher.getEstado().equals("AF")) && voucher.getHabilitado() == true) {
 					vouchersMid.add(voucher);
 				}
-				else if (voucher.getEstado() == "U") {
-					throw new NullPointerException("El voucher: " + voucher.getCodigoVoucher() + " se encuentra UTILIZADO");
-				}
-				else if (voucher.getEstado() == "V") {
-					throw new NullPointerException("El voucher: " + voucher.getCodigoVoucher() + " se encuentra VENCIDO");
-				} 
 				else if (voucher.getHabilitado() == false) {
 					throw new NullPointerException("El voucher: " + voucher.getCodigoVoucher() + " no se encuentra habilitado"); 
 				}
+				 switch(voucher.getEstado()) {
+			        case "U":
+			        	throw new NullPointerException("El voucher: " + voucher.getCodigoVoucher() + " se encuentra UTILIZADO");
+			        case "ND":
+			        	throw new NullPointerException("El voucher: " + voucher.getCodigoVoucher() + " se encuentra NO DISPONIBLE, verificar si existe duplicado");
+			        case "V":
+			        	throw new NullPointerException("El voucher: " + voucher.getCodigoVoucher() + " se encuentra VENCIDO");
+			        default:
+			        	break;
+			        }
 
-			     // voucherRepository.saveAll(voucher);
 		   } catch (Exception e) {
-			    throw new RuntimeException("Falla en la busqueda de voucher DNI o Código de voucher erroneo: " + e.getMessage());
+			    throw new RuntimeException("Error: " + e.getMessage());
 		   }	
 			
 		}
@@ -111,8 +120,7 @@ public class VoucherMidServiceImpl{
 
 //		HashMap<String, String> mapaRespuesta = responseEntity.getBody();
 		HashMap<String, String> mapaRespuesta = new HashMap<>();
-		System.out.println("INFORMAR ESTADO OK. SE PUEDE USAR EL VOUCHER");
-		//ver esto
+
 		responseMiddlewere.setStatus("OK");
 		responseMiddlewere.setGeneracion(mapaRespuesta.get("Disponible"));
 		if(mapaRespuesta.get("MsgError") != null) {
@@ -137,12 +145,12 @@ public RequestVoucher procesarVoucherAFacturar(VoucherDto voucherDto) throws Exc
 			Voucher voucher = new Voucher();
 			voucher = voucherRepository.findByCodigoVoucherAndDni(cv, voucherDto.getDniCliente());
 			try {
-				if (voucher.getEstado() == "E" || voucher.getEstado() == "AF") {
+				if (voucher.getEstado().equals("E") || voucher.getEstado().equals("AF")) {
 					voucher.setEstadosPasados(voucher.getEstadosPasados()+'\n'+"A FACTURAR, el dia "+ f2.format(new Date())+" por el usuario: "+"agregar usuario");
 					voucher.setEstado("AF");
 					voucherRepository.save(voucher);
 					vouchersMid.add(voucher);
-					voucherRepository.save(voucher);
+				//	voucherRepository.save(voucher);
 				}
 		     
 		   } catch (Exception e) {
@@ -167,13 +175,13 @@ public RequestVoucher procesarVoucherUtilizar(VoucherDto voucherDto) throws Exce
 		Voucher voucher = new Voucher();
 		voucher = voucherRepository.findByCodigoVoucherAndDni(cv, voucherDto.getDniCliente());
 		try {
-			if (voucher.getEstado() == "AF") {
+			if (voucher.getEstado().equals("AF")) {
 				voucher.setEstadosPasados(voucher.getEstadosPasados()+'\n'+"UTILIZADO, el dia "+ f2.format(new Date())+" por el usuario: "+"agregar usuario");
 				voucher.setEstado("U");
 				voucher.setFacturaAsociada(voucherDto.getFacturaAsociada());
 				voucherRepository.save(voucher);
 				vouchersMid.add(voucher);
-				voucherRepository.save(voucher);
+				//voucherRepository.save(voucher);
 			}
 	     
 	   } catch (Exception e) {
