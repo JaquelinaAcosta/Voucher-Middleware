@@ -24,7 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import com.voucherExcel.model.Voucher;
 import com.voucherExcel.repository.VoucherRepository;
 import com.voucherMiddleware.model.RequestVoucher;
-import com.voucherMiddleware.model.ResponseMiddlewere;
+import com.voucherMiddleware.model.ResponseMiddleware;
 import com.voucherMiddleware.model.VoucherDto;
 
 @Service
@@ -95,9 +95,9 @@ public class VoucherMidServiceImpl{
 	
 	// enviar Respuesta
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ResponseMiddlewere informarVoucher(String request) {
+	public ResponseMiddleware informarVoucher(String request) {
 		
-		ResponseMiddlewere responseMiddlewere = new ResponseMiddlewere();
+		ResponseMiddleware responseMiddlewere = new ResponseMiddleware();
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);

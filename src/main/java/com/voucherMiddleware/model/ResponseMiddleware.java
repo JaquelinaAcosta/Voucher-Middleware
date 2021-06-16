@@ -1,6 +1,6 @@
 package com.voucherMiddleware.model;
 
-public class ResponseMiddlewere {
+public class ResponseMiddleware {
     
 	private String status;
 	private String generacion;

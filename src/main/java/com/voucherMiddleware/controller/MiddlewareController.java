@@ -8,9 +8,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.voucherMiddleware.model.RequestVoucher;
-import com.voucherMiddleware.model.ResponseMiddlewere;
+import com.voucherMiddleware.model.ResponseMiddleware;
 import com.voucherMiddleware.model.VoucherDto;
-import com.voucherMiddleware.services.VoucherMidService;
 import com.voucherMiddleware.services.impl.VoucherMidServiceImpl;
 
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ public class MiddlewareController {
 		VoucherDto voucherDto = mapper.convertValue(requestvoucherDtoNodo, VoucherDto.class);
 
 		RequestVoucher request = new RequestVoucher();
-		ResponseMiddlewere response = new ResponseMiddlewere();
+		ResponseMiddleware response = new ResponseMiddleware();
 		ObjectNode newNode = mapper.createObjectNode();
 		
 		logger.info("contoller middlew ingreso:");
@@ -92,7 +91,7 @@ public class MiddlewareController {
 		VoucherDto voucherDto = mapper.convertValue(requestvoucherDtoNodo, VoucherDto.class);
 
 		RequestVoucher request = new RequestVoucher();
-		ResponseMiddlewere response = new ResponseMiddlewere();
+		ResponseMiddleware response = new ResponseMiddleware();
 		ObjectNode newNode = mapper.createObjectNode();
 		try {
 			request = voucherMidService.procesarVoucherAFacturar(voucherDto);
@@ -126,7 +125,7 @@ public class MiddlewareController {
 		VoucherDto voucherDto = mapper.convertValue(requestvoucherDtoNodo, VoucherDto.class);
 
 		RequestVoucher request = new RequestVoucher();
-		ResponseMiddlewere response = new ResponseMiddlewere();
+		ResponseMiddleware response = new ResponseMiddleware();
 		ObjectNode newNode = mapper.createObjectNode();
 		try {
 			request = voucherMidService.procesarVoucherUtilizar(voucherDto);
