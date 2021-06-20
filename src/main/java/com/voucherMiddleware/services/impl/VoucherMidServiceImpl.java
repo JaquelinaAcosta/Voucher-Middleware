@@ -146,7 +146,7 @@ public RequestVoucher procesarVoucherAFacturar(VoucherDto voucherDto) throws Exc
 			voucher = voucherRepository.findByCodigoVoucherAndDni(cv, voucherDto.getDniCliente());
 			try {
 				if (voucher.getEstado().equals("E") || voucher.getEstado().equals("AF")) {
-					voucher.setEstadosPasados(voucher.getEstadosPasados()+'\n'+"A FACTURAR, el dia "+ f2.format(new Date())+" por el usuario: "+"agregar usuario");
+					voucher.setEstadosPasados(voucher.getEstadosPasados()+'\n'+"A FACTURAR, el dia "+ f2.format(new Date())+" por el usuario: "+"SISTEMA RUMBO");
 					voucher.setEstado("AF");
 					voucherRepository.save(voucher);
 					vouchersMid.add(voucher);
@@ -176,7 +176,7 @@ public RequestVoucher procesarVoucherUtilizar(VoucherDto voucherDto) throws Exce
 		voucher = voucherRepository.findByCodigoVoucherAndDni(cv, voucherDto.getDniCliente());
 		try {
 			if (voucher.getEstado().equals("AF")) {
-				voucher.setEstadosPasados(voucher.getEstadosPasados()+'\n'+"UTILIZADO, el dia "+ f2.format(new Date())+" por el usuario: "+"agregar usuario");
+				voucher.setEstadosPasados(voucher.getEstadosPasados()+'\n'+"UTILIZADO, el dia "+ f2.format(new Date())+" por el usuario: "+"SISTEMA RUMBO");
 				voucher.setEstado("U");
 				voucher.setFacturaAsociada(voucherDto.getFacturaAsociada());
 				voucherRepository.save(voucher);
